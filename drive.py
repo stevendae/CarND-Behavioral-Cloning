@@ -11,6 +11,7 @@ import eventlet.wsgi
 from PIL import Image
 from flask import Flask
 from io import BytesIO
+import utils
 
 from keras.models import load_model
 import h5py
@@ -44,7 +45,7 @@ class SimplePIController:
 
 
 controller = SimplePIController(0.1, 0.002)
-set_speed = 9
+set_speed = 25
 controller.set_desired(set_speed)
 
 
@@ -60,8 +61,12 @@ def telemetry(sid, data):
         # The current image from the center camera of the car
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
+
         image_array = np.asarray(image)
-        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+        image_array = utils.preprocess(image_array)
+        image2 = image_array[None,:,:,:]
+
+        steering_angle = float(model.predict(image2, batch_size=1))
 
         throttle = controller.update(float(speed))
 
