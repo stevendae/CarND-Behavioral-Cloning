@@ -109,7 +109,7 @@ def translate(image, angle, trans_range):
     rows,cols = image.shape[:2]
     trans_x = trans_range * (np.random.rand() - 0.5)
     trans_y = trans_range * (np.random.uniform(-0.3,0.3))
-    angle += trans_x * 0.004
+    angle += trans_x * 0.002
     M = np.float32([[1,0, trans_x],[0,1, trans_y]])
     image = cv2.warpAffine(image,M,(cols,rows))
 

@@ -36,7 +36,7 @@ def build_model(keep_prob):
 
 
     model = Sequential()
-    model.add(Lambda(lambda x: x/127.5 - 1.0, input_shape=INPUT_SHAPE))
+    model.add(Lambda(lambda x: x/255.0-0.5, input_shape=INPUT_SHAPE))
     model.add(Conv2D(24,5,5, activation = 'relu', subsample=(2,2)))
     model.add(Conv2D(36,5,5, activation = 'relu', subsample=(2,2)))
     model.add(Conv2D(48,5,5, activation = 'relu', subsample=(2,2)))
@@ -82,7 +82,7 @@ def main():
     number_of_epochs = 25
     batch_size_p = 32
     keep_probability = 0.5
-    angle_shift = 0.2
+    angle_shift = 0.3
     translation_range = 50
     
     train_data, valid_data = load_data()
