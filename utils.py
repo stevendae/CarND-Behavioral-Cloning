@@ -73,12 +73,12 @@ def choose_image(sample, angle_correct):
 
 def augment(image, angle, trans_range):
 
-    if np.random.rand() > 0.5:
-        image = brighten(image)
-    if np.random.rand() > 0.5:
-        image = shadow(image)
-    if np.random.rand() > 0.5:
-        image, angle = translate(image,angle, trans_range)
+    #if np.random.rand() > 0.5:
+    image = brighten(image)
+    #if np.random.rand() > 0.5:
+    image = shadow(image)
+    #if np.random.rand() > 0.5:
+    image, angle = translate(image,angle, trans_range)
     if np.random.rand() > 0.5:
         image, angle = flip(image,angle)
 
@@ -93,9 +93,8 @@ def shadow(image):
     shadow_mask = 0*image_hls[:,:,1]
     ym, xm = np.mgrid[0:image.shape[0],0:image.shape[1]]
     shadow_mask[np.where((ym - y1) * (x2 - x1) - (y2 - y1) * (xm - x1) > 0)] = 1
-    #random_bright = .25+.7*np.random.uniform()
     if np.random.randint(2)==1:
-        random_bright = .5
+        random_bright = .25+.7*np.random.uniform()
         side1 = shadow_mask==1
         side0 = shadow_mask==0 
         if np.random.randint(2)==1:
@@ -108,7 +107,7 @@ def shadow(image):
 def translate(image, angle, trans_range):
     rows,cols = image.shape[:2]
     trans_x = trans_range * (np.random.rand() - 0.5)
-    trans_y = trans_range * (np.random.uniform(-0.3,0.3))
+    trans_y = trans_range * (np.random.rand() - 0.5)
     angle += trans_x * 0.002
     M = np.float32([[1,0, trans_x],[0,1, trans_y]])
     image = cv2.warpAffine(image,M,(cols,rows))
@@ -124,7 +123,7 @@ def flip (image, angle):
 
 def crop (image):
 
-    return image[60:140, :, :]
+    return image[60:135, :, :]
 
 def resize(image):
     

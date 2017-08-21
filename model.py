@@ -9,6 +9,7 @@ from keras.layers.convolutional import Convolution2D as Conv2D
 from keras.callbacks import ModelCheckpoint
 from keras.optimizers import Adam
 
+
 np.random.seed(0) #initialize random state
 
 # Data Directory for Generator - samples[]
@@ -45,7 +46,7 @@ def build_model(keep_prob):
     model.add(Flatten())
     model.add(Dense(100))
     model.add(Dense(50))
-    model.add(Dropout(keep_prob))
+    model.add(Dropout(0.25))
     model.add(Dense(10))
     model.add(Dense(1))
     model.summary()
@@ -59,8 +60,7 @@ def compile_fit_model(lr, nb_epoch, model, train_samples, valid_samples, batch_s
 
     checkpointer = ModelCheckpoint(filepath="model-{epoch:02d}-{val_loss:.5f}.h5",
                                    monitor='val_loss',
-                                   verbose = 1,
-                                   save_best_only=True)
+                                   verbose = 1)
 
     nb_train = len(train_samples)
     nb_valid = len(valid_samples)
@@ -79,11 +79,11 @@ def compile_fit_model(lr, nb_epoch, model, train_samples, valid_samples, batch_s
 def main():
 
     learning_rate = 0.0001
-    number_of_epochs = 25
+    number_of_epochs = 1
     batch_size_p = 32
     keep_probability = 0.5
-    angle_shift = 0.3
-    translation_range = 50
+    angle_shift = 0.25
+    translation_range = 30
     
     train_data, valid_data = load_data()
     model = build_model(keep_probability)
