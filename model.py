@@ -37,16 +37,16 @@ def build_model(keep_prob):
 
 
     model = Sequential()
-    model.add(Lambda(lambda x: x/255.0-0.5, input_shape=INPUT_SHAPE))
+    model.add(Lambda(lambda x: x/127.5-1.0, input_shape=INPUT_SHAPE))
     model.add(Conv2D(24,5,5, activation = 'relu', subsample=(2,2)))
     model.add(Conv2D(36,5,5, activation = 'relu', subsample=(2,2)))
     model.add(Conv2D(48,5,5, activation = 'relu', subsample=(2,2)))
     model.add(Conv2D(64,3,3, activation = 'relu', subsample=(1,1)))
     model.add(Conv2D(64,3,3, activation = 'relu', subsample=(1,1)))
+    model.add(Dropout(keep_prob))
     model.add(Flatten())
     model.add(Dense(100))
     model.add(Dense(50))
-    model.add(Dropout(0.25))
     model.add(Dense(10))
     model.add(Dense(1))
     model.summary()
@@ -60,9 +60,10 @@ def compile_fit_model(lr, nb_epoch, model, train_samples, valid_samples, batch_s
 
     checkpointer = ModelCheckpoint(filepath="model-{epoch:02d}-{val_loss:.5f}.h5",
                                    monitor='val_loss',
-                                   verbose = 1)
+                                   verbose = 1,
+                                   save_best_only=True)
 
-    nb_train = len(train_samples)
+    nb_train = 20000
     nb_valid = len(valid_samples)
     
     train_gen = generator(train_samples, batch_size, True, a_shift, t_range)
@@ -79,11 +80,11 @@ def compile_fit_model(lr, nb_epoch, model, train_samples, valid_samples, batch_s
 def main():
 
     learning_rate = 0.0001
-    number_of_epochs = 1
+    number_of_epochs = 10
     batch_size_p = 32
     keep_probability = 0.5
-    angle_shift = 0.25
-    translation_range = 30
+    angle_shift = 0.2
+    translation_range = 50
     
     train_data, valid_data = load_data()
     model = build_model(keep_probability)

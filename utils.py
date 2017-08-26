@@ -11,30 +11,34 @@ def generator(samples, batch_size, is_training, angle_correct, trans_range):
     while 1: # Loop forever so the generator never terminates
         samples = np.array(samples)
         shuffle(samples)
+        
         for offset in range(0, num_samples, batch_size):
             batch_samples = samples[offset:offset+batch_size]
+
             images = []
-            angles = []
+            angles = []  
+
             for batch_sample in batch_samples:
 
                 if is_training & (np.random.rand() < 0.6):
                     image, angle = choose_image(batch_sample, angle_correct)
                     image, angle = augment(image,angle, trans_range)
+                    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
                     image = preprocess(image)
 
                 else:
                     name = 'E:/CarND-Behavioral-Cloning/CarND-Behavioral-Cloning-P3/data/IMG/'+batch_sample[0].split('/')[-1]
                     image2 = cv2.imread(name,1)
-                    #image = cv2.cvtColor(image2, cv2.COLOR_BGR2RGB)
+                    image = cv2.cvtColor(image2, cv2.COLOR_BGR2RGB)
                     image = preprocess(image2)
                     angle = float(batch_sample[3])
 
                 images.append(image)
                 angles.append(angle)
 
-            # trim image to only see section with road
             X_train = np.array(images)
             y_train = np.array(angles)
+
             yield shuffle(X_train, y_train)
 
 def brighten(image):
@@ -73,12 +77,12 @@ def choose_image(sample, angle_correct):
 
 def augment(image, angle, trans_range):
 
-    #if np.random.rand() > 0.5:
-    image = brighten(image)
-    #if np.random.rand() > 0.5:
-    image = shadow(image)
-    #if np.random.rand() > 0.5:
-    image, angle = translate(image,angle, trans_range)
+    if np.random.rand() > 0.5:
+        image = brighten(image)
+    if np.random.rand() > 0.5:
+        image = shadow(image)
+    if np.random.rand() > 0.5:
+        image, angle = translate(image,angle, trans_range)
     if np.random.rand() > 0.5:
         image, angle = flip(image,angle)
 
@@ -94,20 +98,20 @@ def shadow(image):
     ym, xm = np.mgrid[0:image.shape[0],0:image.shape[1]]
     shadow_mask[np.where((ym - y1) * (x2 - x1) - (y2 - y1) * (xm - x1) > 0)] = 1
     if np.random.randint(2)==1:
-        random_bright = .25+.7*np.random.uniform()
+        shadow = .25+.5*np.random.uniform()
         side1 = shadow_mask==1
         side0 = shadow_mask==0 
         if np.random.randint(2)==1:
-            image_hls[:,:,1][side1] = image_hls[:,:,1][side1]*random_bright
+            image_hls[:,:,1][side1] = image_hls[:,:,1][side1]*shadow
         else:
-            image_hls[:,:,1][side0] = image_hls[:,:,1][side0]*random_bright    
+            image_hls[:,:,1][side0] = image_hls[:,:,1][side0]*shadow   
     image = cv2.cvtColor(image_hls,cv2.COLOR_HLS2BGR)
     return image
 
 def translate(image, angle, trans_range):
     rows,cols = image.shape[:2]
-    trans_x = trans_range * (np.random.rand() - 0.5)
-    trans_y = trans_range * (np.random.rand() - 0.5)
+    trans_x = trans_range*(np.random.rand() - 0.5)
+    trans_y = 10 * (np.random.rand() - 0.5)
     angle += trans_x * 0.002
     M = np.float32([[1,0, trans_x],[0,1, trans_y]])
     image = cv2.warpAffine(image,M,(cols,rows))
@@ -133,7 +137,7 @@ def resize(image):
 
 def rgb2yuv(image):
 
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+    image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
 
     return image
 
