@@ -46,7 +46,7 @@ The model.py file contains the code for training and saving the convolution neur
 
 ### 1. An appropriate model architecture has been employed
 
-The model that was deployed for the behavioral cloning project was adopted from the [NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) that was similarly used for their end-to-end driving test. In the paper they conclude that their tests have 'empirically demonstrated that CNNs are able to learn the entire task of lane and road following without manual decomposition'. Given the thorough research already conducted, the paper had proved to be a good starting point as a design basis. 
+The model that was deployed for the behavioral cloning project was adopted from the [NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) that was similarly used for their end-to-end driving test. In the paper they conclude that their tests have 'empirically demonstrated that CNNs are able to learn the entire task of lane and road following without manual decomposition'. Given the thorough research conducted in the paper, their central model illustrated a tenable model to deploy for this project.
 
 The model is a deep convolution neural network that is constructed from a normalization layer, followed by five convolutional layers, and three fully connected layers. Convolution layers have shown that they perform hierachical feature distinction when it comes to image recognition and after a few layers when a general feature simulacrum is constructed it can then pass the input towards the fully connected layers to perform parameter classification. The architecture designed and used in model.py is visually illustrated in the diagram below.
 
@@ -66,8 +66,10 @@ The model is a deep convolution neural network that is constructed from a normal
 |dense_4 (Dense)                 |(None, 1)         |11      |dense_3          |
 |                                |**Total params**  |252219  |                 |
 
+The image is initially processed through the lambda layer where the pixel colour values are normalized to a range of -1 to 1. Each convolutional layer that follows afterward implements the relu activation function.
+
 ### 2. Attempts to reduce overfitting in the model
-I added a dropout layer with a keep probability of 0.50 after the second fully connected layer of 50 nodes to minimize overfitting. (model.py line 42)
+I added a dropout layer with a keep probability of 0.50 after the second fully connected layer of 50 nodes in order to combat the proclivity for overfitting. (model.py line 42)
 The model deploys RELU activations to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18) to avoid saturation in vision perception and to minimize error in gradient descent. 
 
 
