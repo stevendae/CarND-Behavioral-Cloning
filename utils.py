@@ -7,8 +7,11 @@ INPUT_SHAPE = (IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_CHANNELS)
 
 def generator(samples, batch_size, is_training, angle_correct, trans_range):
 
+    """
+    Generate images for each training/validation batch
+    """
     num_samples = len(samples)
-    while 1: # Loop forever so the generator never terminates
+    while 1: 
         samples = np.array(samples)
         shuffle(samples)
         
@@ -43,6 +46,9 @@ def generator(samples, batch_size, is_training, angle_correct, trans_range):
 
 def brighten(image):
 
+    """
+    Brighten image by a maximum factor of 1.2 or Darken image by a factor of 0.8
+    """
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     ratio = 1.0 + 0.4 * (np.random.rand()-0.5)
     hsv[:,:,2] = hsv[:,:,2]*ratio
@@ -51,6 +57,9 @@ def brighten(image):
 
 def preprocess(image):
 
+    """
+    Preprocess training, validation, and test pipeline images to minimize memory, and time while maximizing accuracy
+    """
     image = crop(image)
     image = resize(image)
     image = rgb2yuv(image)
@@ -58,6 +67,10 @@ def preprocess(image):
     return image
 
 def choose_image(sample, angle_correct):
+
+    """
+    Choose either left centre or right image from sample list and adjust steering angle if necessary
+    """
     choice = np.random.choice(3)
     correction = angle_correct
     name = 'E:/CarND-Behavioral-Cloning/CarND-Behavioral-Cloning-P3/data/IMG/'+sample[choice].split('/')[-1]
@@ -77,6 +90,10 @@ def choose_image(sample, angle_correct):
 
 def augment(image, angle, trans_range):
 
+    """
+    Augmentation Pipeline
+    """
+
     if np.random.rand() > 0.5:
         image = brighten(image)
     if np.random.rand() > 0.5:
@@ -89,6 +106,9 @@ def augment(image, angle, trans_range):
     return image, angle
 
 def shadow(image):
+    """
+    Create Shadow Mask for a Random Half, Split Vertically, in the Frame
+    """
     x1 = 320*np.random.rand()
     y1 = 0
     x2 = 320*np.random.rand()
@@ -109,6 +129,9 @@ def shadow(image):
     return image
 
 def translate(image, angle, trans_range):
+    """
+    Translate horizontally and vertically; adjust steering angle based on horizontal adjustment
+    """
     rows,cols = image.shape[:2]
     trans_x = trans_range*(np.random.rand() - 0.5)
     trans_y = 10 * (np.random.rand() - 0.5)
@@ -119,6 +142,9 @@ def translate(image, angle, trans_range):
     return image, angle
 
 def flip (image, angle):
+    """
+    Flip image to remove left turning bias
+    """
     image = cv2.flip(image, flipCode = 1)
     angle = -angle
 
@@ -136,6 +162,9 @@ def resize(image):
     return image
 
 def rgb2yuv(image):
+    """
+    Converted from RGB to YUV colorspace in NVIDIA model
+    """
 
     image = cv2.cvtColor(image, cv2.COLOR_RGB2YUV)
 
