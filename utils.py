@@ -108,6 +108,8 @@ def augment(image, angle, trans_range):
 def shadow(image):
     """
     Create Shadow Mask for a Random Half, Split Vertically, in the Frame
+
+    Reference Source: https://chatbotslife.com/using-augmentation-to-mimic-human-driving-496b569760a9
     """
     x1 = 320*np.random.rand()
     y1 = 0
