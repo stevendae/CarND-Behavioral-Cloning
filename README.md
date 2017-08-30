@@ -77,19 +77,17 @@ The model was trained and validated on different data sets to ensure that the mo
 
 ### 3. Model parameter tuning
 
-The model used an adam optimizer, which uses the running averages of gradients otherwise known as momentum to allow us to converge to minimization. The learning parameters including number of epochs, number of samples, batch size, and learning rate were tuned on the basis of trial and error. The validation loss reduced from 0.01107 to 0.01089 after the three epochs when the learning rate was changed from 0.001 to 0.0001. Increasing the batch size had shown to get less accurate results for it was kept at a minimum of 32. The number of samples was increased from 8000 to 20,000 where the generator would be capable of generating an infinite amount of samples due to the augmentation pipeline. This had helped in achieving success during the tight turns after the bridge. The number of epochs was set to default value of 10 where validation improvements truncated after 6 epochs.
+The model used an adam optimizer, which uses the running averages of gradients otherwise known as momentum to allow us to converge to minimization. The learning parameters including number of epochs, number of samples, batch size, and learning rate were tuned on the basis of trial and error. The validation loss reduced from 0.01107 to 0.01089, after three epochs, when the learning rate was changed from 0.001 to 0.0001. Increasing the batch size had shown to get less accurate results hence it was defined at a minimum value of 32. The number of samples was increased from 8000 to 20,000 where the generator would be capable of generating an infinite amount of samples due to the augmentation pipeline. This had helped in achieving success during the tight turns after the bridge. The number of epochs was set to default value of 10 where validation improvements truncated after around 6 epochs.
 
 ### 4. Training Data Selected
 
-I had found that testing the model with the sample training data provided in the project resources was a way to eliminate variance in validating the accuracy of my model. Therefore the data used to train the model was from the sample data, and the strategy used to account for recovery and sharp turn scenarios was in the emphasis of data augmentation.
+I had found that testing the model with the sample training data provided in the project resources was a way to reduce variance in validating the accuracy of my model. I came to this conclusion when I would use different datasets that I captured for the same model. I had found that the dataset that I captured manually led to very erratic autonomous driving behavior at points much earlier than the Udacity sample dataset. Therefore the data used to train the model was from the sample data, and the strategy used to account for recovery and sharp turn scenarios was in the reproduction of augmented data. 
 
 ## Data Preprocessing
 
 ### 1. Image Augumentation
 
-For training, I used certain augmentation techniques along with a batch generator to theoretically generate an infinite number of images:
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+For training, I used certain augmentation techniques along with a batch generator to theoretically generate an infinite number of images. These augmentation protocols include:
 
 - Randomly choose right, left or center images.
 - For left image, steering angle is adjusted by +0.2
