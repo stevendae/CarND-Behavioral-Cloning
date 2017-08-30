@@ -46,7 +46,7 @@ The model.py file contains the code for training and saving the convolution neur
 
 ### 1. An appropriate model architecture has been employed
 
-The model that was deployed for the behavioral cloning project was adopted from the [NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) that was similarly used for their end-to-end driving test. In the paper they conclude that their tests have 'empirically demonstrated that CNNs are able to learn the entire task of lane and road following without manual decomposition'. Given the thorough research already conducted, the paper had proved to be a good starting point as a design basis. 
+The model that was deployed for the behavioral cloning project was adopted from the [NVIDIA model](https://devblogs.nvidia.com/parallelforall/deep-learning-self-driving-cars/) that was similarly used for their end-to-end driving test. In the paper they conclude that their tests have 'empirically demonstrated that CNNs are able to learn the entire task of lane and road following without manual decomposition'. Given the thorough research conducted in the paper, their central model illustrated a tenable model to deploy for this project.
 
 The model is a deep convolution neural network that is constructed from a normalization layer, followed by five convolutional layers, and three fully connected layers. Convolution layers have shown that they perform hierachical feature distinction when it comes to image recognition and after a few layers when a general feature simulacrum is constructed it can then pass the input towards the fully connected layers to perform parameter classification. The architecture designed and used in model.py is visually illustrated in the diagram below.
 
@@ -66,20 +66,22 @@ The model is a deep convolution neural network that is constructed from a normal
 |dense_4 (Dense)                 |(None, 1)         |11      |dense_3          |
 |                                |**Total params**  |252219  |                 |
 
+The image is initially processed through the lambda layer where the pixel colour values are normalized to a range of -1 to 1. Each convolutional layer that follows afterward implements the relu activation function.
+
 ### 2. Attempts to reduce overfitting in the model
-I added a dropout layer with a keep probability of 0.50 after the second fully connected layer of 50 nodes to minimize overfitting. (model.py line 42)
-The model deploys RELU activations to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18) to avoid saturation in vision perception and to minimize error in gradient descent. 
+I added a dropout layer with a keep probability of 0.50 after the second fully connected layer of 50 nodes in order to combat the proclivity for overfitting. (model.py line 52)
+The model deploys RELU activations to introduce nonlinearity (model.py line 44), and the data is normalized in the model using a Keras lambda layer (model.py line 43) to avoid saturation in vision perception and to minimize error in gradient descent. 
 
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 24). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on different data sets to ensure that the model was not overfitting (model.py line 31). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 ### 3. Model parameter tuning
 
-The model used an adam optimizer, which uses the running averages of gradients otherwise known as momentum to allow us to converge to minimization. The training was performed on a gaming laptop with GTX 960M graphics card so the computations were manageable on the hardware. (model.py line 25).
+The model used an adam optimizer, which uses the running averages of gradients otherwise known as momentum to allow us to converge to minimization. The learning parameters including number of epochs, number of samples, batch size, and learning rate were tuned on the basis of trial and error. The validation loss reduced from 0.01107 to 0.01089 after the three epochs when the learning rate was changed from 0.001 to 0.0001. Increasing the batch size had shown to get less accurate results for it was kept at a minimum of 32. The number of samples was increased from 8000 to 20,000 where the generator would be capable of generating an infinite amount of samples due to the augmentation pipeline. This had helped in achieving success during the tight turns after the bridge. The number of epochs was set to default value of 10 where validation improvements truncated after 6 epochs.
 
 ### 4. Training Data Selected
 
-I had found that testing the model with the sample training data provided in the project resources was a way to eliminate variance in validating the accuracy of my model. Therefore the data that was used was from the sample data, and so the strategy used to account for recovery and sharp turn scenarios was in the emphasis of data augmenetation.
+I had found that testing the model with the sample training data provided in the project resources was a way to eliminate variance in validating the accuracy of my model. Therefore the data used to train the model was from the sample data, and the strategy used to account for recovery and sharp turn scenarios was in the emphasis of data augmentation.
 
 ## Data Preprocessing
 
