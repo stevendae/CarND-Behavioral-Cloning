@@ -7,17 +7,6 @@ The goals / steps of this project are the following:
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
-
-[//]: # (Image References)
-
-[image1]: ./images/cnn-architecture-624x890 "CNN Architecture"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
-
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
@@ -125,13 +114,17 @@ The following are examples of transformations performed on the images
 
 |**Original Image**|**Increased Brightness Image**|
 |------------------|-----------------|
-|![](examples/center.jpg?raw=true)|![](examples/bright.jpg?raw=true)|
+|![](examples/center.jpg?raw=true)|![](examples/Bright.jpg?raw=true)|
+
+|**Original Image**|**Increased Shadow Image**|
+|------------------|-----------------|
+|![](examples/center.jpg?raw=true)|![](examples/Shadow.jpg?raw=true)|
 
 
 ## Training, Validation and Testing
 
 - Since this was a regression network that aimed at optimizing steering angle for a given image sequence I used mean squared error as my loss function
-- I used the Adam optimizer for the applied momentum technique with learning rate of 1.0e-4
+- An Adam optimizer was used for its implementation of applied momentum and was parameterized at a learning rate of 1.0e-4
 - I used ModelCheckpoint from Keras to save the model after an epoch if the validation loss was lower than the last recorded minimum
 - It was found that validation accuracy did not continue to improve after 8 training epochs.
 
