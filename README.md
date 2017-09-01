@@ -1,4 +1,4 @@
-**Behavioral Cloning Project**
+# Behavioral Cloning Project
 
 The goals / steps of this project are the following:
 * Use the simulator to collect data of good driving behavior
@@ -6,6 +6,10 @@ The goals / steps of this project are the following:
 * Train and validate the model with a training and validation set
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
+
+## Project Introduction
+
+This project was completed as a submission for the 'Use Deep Learning to Clone Driving Behavior' in  Udacity's Self-Driving Car Nanodegree program. This project was made allowable by the administrators, and instructional team of Udacity where their lessons have been used to create this program. I also received guidance in creating the overall architecture for the entire program from Siraj Raval's instructional video on [youtube](https://www.youtube.com/watch?v=EaY5QiZwSP4), however every line of code was inputted by me. 
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
